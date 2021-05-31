@@ -21,3 +21,12 @@
   transform: scale(1.2);
   transition: transform 0.15s ease-in-out;
 }
+
+.winning-text {
+  font-size: 3em;
+  font-weight: bold;
+}
+
+.exit-button {
+  width: 50%;
+}

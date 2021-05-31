@@ -8,35 +8,39 @@ import com.vaadin.flow.component.html.Label;
 
 public class Card extends Div {
 
-    private String color;
-    private int value;
+    private final String color;
+    private final int value;
+    private int index;
     private boolean allowExpand;
 
-    public Card(){
+    public Card(int index){
         int randNum = (int)(Math.random() * 9) + 1; // 1 - 9 (inclusive)
-        String randColor = randColor();
 
-        color = randColor;
+        color = randColor();
         value = randNum;
         allowExpand = true;
+        this.index = index;
 
         configure();
     }
 
-    public Card(boolean allowExpand){
+    public Card(int index, boolean allowExpand){
         int randNum = (int)(Math.random() * 9) + 1; // 1 - 9 (inclusive)
-        String randColor = randColor();
 
-        color = randColor;
+        color = randColor();
         value = randNum;
+
+        this.index = index;
         this.allowExpand = allowExpand;
 
         configure();
     }
 
-    public Card(String color, int num){
+    public Card(int index, String color, int num){
+        this.index = index;
         this.color = color;
         this.value = num;
+        this.allowExpand = true;
 
         configure();
     }
@@ -71,14 +75,21 @@ public class Card extends Div {
 
     private void configureCardColor() {
 
-        if (color.equals("Sapphire")){
-            getStyle().set("background-color", "#0956BF");
-        } else if (color.equals("Sinopia")){
-            getStyle().set("background-color", "#D72600");
-        } else if (color.equals("Slimy Green")) {
-            getStyle().set("background-color", "#379711");
-        } else if (color.equals("Safety Yellow")){
-            getStyle().set("background-color", " #ECD407");
+        switch (color) {
+            case "Sapphire":
+                getStyle().set("background-color", "#0956BF");
+                break;
+            case "Sinopia":
+                getStyle().set("background-color", "#D72600");
+                break;
+            case "Slimy Green":
+                getStyle().set("background-color", "#379711");
+                break;
+            case "Safety Yellow":
+                getStyle().set("background-color", "#ECD407");
+                break;
+            case "Black":
+                getStyle().set("background-color", "#000000");
         }
     }
 
@@ -88,5 +99,13 @@ public class Card extends Div {
 
     public int getValue() {
         return value;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index){
+        this.index = index;
     }
 }
