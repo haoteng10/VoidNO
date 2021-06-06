@@ -3,15 +3,10 @@ package com.example.Views;
 import com.example.Game;
 import com.example.components.BackCard;
 import com.example.components.Card;
-import com.vaadin.flow.component.ClickEvent;
-import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-
-import java.util.ArrayList;
 
 @Route("/game")
 @CssImport("./styles/shared-styles.css")
@@ -54,7 +49,11 @@ public class GameView extends VerticalLayout {
     }
 
     public static void removeCardFromComputerStack(BackCard card){
-        topStack.remove(card);
+        try {
+            topStack.remove(card);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void removeCardFromPlayerStack(Card card){

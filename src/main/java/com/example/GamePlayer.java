@@ -16,7 +16,6 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class GamePlayer {
@@ -29,19 +28,18 @@ public class GamePlayer {
         playingCards = new ArrayList<Card>();
         if (isComputer){
             for (int i = 0; i < 7; i++){
-                BackCard card = new BackCard(playingCards.size());
+                BackCard card = new BackCard(playingCards.size(), false);
                 playingCards.add(card);
                 // Call MainView and add to the computer stack
                 GameView.addCardToComputerStack(card);
             }
         } else {
             for (int i = 0; i < 7; i++){
-                Card card = new Card(playingCards.size());
+                Card card = new Card(playingCards.size(), false);
                 card.addClickListener(new ComponentEventListener<ClickEvent<Div>>() {
                     @Override
                     public void onComponentEvent(ClickEvent<Div> divClickEvent) {
                         System.out.println(card.getColor() + " " + card.getValue());
-
                         playCard(card.getIndex());
                     }
                 });
@@ -52,8 +50,8 @@ public class GamePlayer {
         }
     }
 
-    public boolean playCard(int cardIndex){
-        if (Game.playCard(playingCards.get(cardIndex))) {
+    public void playCard(int cardIndex) {
+        if (Game.playCard(this, playingCards.get(cardIndex))) {
             //Remove card from the player's stack
             Card card = playingCards.remove(cardIndex);
             //Remove the card from the GUI
@@ -62,7 +60,7 @@ public class GamePlayer {
             } else {
                 GameView.removeCardFromPlayerStack(card);
             }
-            GameView.replacePlayingCard(card);
+            GameView.replacePlayingCard(new Card(-1, card.getType(), card.getColor(), card.getValue()));
 
             //Update all cards in the stack to make sure they have the correct index
             updateIndex();
@@ -70,9 +68,23 @@ public class GamePlayer {
             //Check if the player wins
             checkIfWinning();
 
-            return true;
+            //Note: The opponent can move before the user selects a color
+
+            //Change position
+            Game.switchPosition();
+
+            if (Game.isComputerTurn()){
+
+//                try {
+//                    Thread.sleep(1000);
+                    Game.getComputer().autoplay();
+//                } catch (Exception ignored){
+//
+//                }
+
+            }
+
         }
-        return false;
     }
 
     private void checkIfWinning() {
@@ -122,13 +134,15 @@ public class GamePlayer {
     }
 
     public void newCard(Card card) {
-        card.addClickListener(new ComponentEventListener<ClickEvent<Div>>() {
-            @Override
-            public void onComponentEvent(ClickEvent<Div> divClickEvent) {
-                System.out.println(card.getColor() + " " + card.getValue());
-                playCard(card.getIndex());
-            }
-        });
+        if (!isComputer) {
+            card.addClickListener(new ComponentEventListener<ClickEvent<Div>>() {
+                @Override
+                public void onComponentEvent(ClickEvent<Div> divClickEvent) {
+                    System.out.println(card.getColor() + " " + card.getValue());
+                    playCard(card.getIndex());
+                }
+            });
+        }
 
         playingCards.add(card);
 
@@ -141,5 +155,20 @@ public class GamePlayer {
 
         //Reset the cards' index values
         updateIndex();
+    }
+
+    public void autoplay(){
+        System.out.println("=== Autoplay by computer ===");
+        for (int i = playingCards.size() - 1; i >= 0; i--) {
+            if (Game.checkValidMove(this, playingCards.get(i))) {
+                playCard(playingCards.get(i).getIndex());
+                return;
+            }
+        }
+        Game.computerDrawCard();
+    }
+
+    public boolean isComputer(){
+        return isComputer;
     }
 }
