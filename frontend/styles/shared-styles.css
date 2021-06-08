@@ -11,6 +11,8 @@
 }
 
 .card {
+  font-family: 'Kanit', serif;
+  font-weight: 900;
   height: 200px;
   width: 100px;
   text-align: center;

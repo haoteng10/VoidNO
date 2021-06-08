@@ -1,10 +1,7 @@
 package com.example;
 
 import com.example.Views.GameView;
-import com.example.components.BackCard;
-import com.example.components.Card;
-import com.example.components.CardType;
-import com.example.components.ColorSelector;
+import com.example.components.*;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.html.Div;
@@ -109,18 +106,15 @@ public class Game {
             playingCards.add(card);
 
             if (card.getType() == CardType.WILD_COLOR || card.getType() == CardType.WILD_PLUS_FOUR){
-//                Future<String> futureSelectedColor = new ColorSelector().select();
-                ColorSelector selector = new ColorSelector();
 
-                System.out.println("Current move: " + currentMove);
-                System.out.println("Player: " + player + " Computer? " + player.isComputer());
-
-                if (currentMove == Game.player) {
-                    System.out.println("Choose a color!");
-                    selector.selectSync();
-                    dialogOpened = true;
+                if (currentMove == Game.computer){
+                    new ColorSelector().random();
                 } else {
-                    selector.random();
+                    if (!card.isSelectedColor()) {
+                        new SmallPopUp("You must select a color before placing!");
+                        return false;
+                    }
+                    return true;
                 }
             }
 

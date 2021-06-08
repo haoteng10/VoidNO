@@ -74,14 +74,7 @@ public class GamePlayer {
             Game.switchPosition();
 
             if (Game.isComputerTurn()){
-
-//                try {
-//                    Thread.sleep(1000);
-                    Game.getComputer().autoplay();
-//                } catch (Exception ignored){
-//
-//                }
-
+                Game.getComputer().autoplay();
             }
 
         }
@@ -159,6 +152,7 @@ public class GamePlayer {
 
     public void autoplay(){
         System.out.println("=== Autoplay by computer ===");
+
         for (int i = playingCards.size() - 1; i >= 0; i--) {
             if (Game.checkValidMove(this, playingCards.get(i))) {
                 playCard(playingCards.get(i).getIndex());

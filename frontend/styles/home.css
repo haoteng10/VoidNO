@@ -1,0 +1,14 @@
+h1, h2, .button-div {
+    text-align: center;
+    width: 100%;
+}
+
+h1 {
+    font-family: 'Luckiest Guy', cursive;
+}
+
+.button-div {
+    text-align: center;
+}
+
+

@@ -7,10 +7,12 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.InitialPageSettings;
+import com.vaadin.flow.server.PageConfigurator;
 
 @Route("/game")
 @CssImport("./styles/shared-styles.css")
-public class GameView extends VerticalLayout {
+public class GameView extends VerticalLayout implements PageConfigurator {
 
     private static HorizontalLayout topStack;
     private static HorizontalLayout centerStack;
@@ -74,7 +76,13 @@ public class GameView extends VerticalLayout {
     }
 
     public static void replacePlayingCard(Card card){
+
         centerStack.remove(centerStack.getComponentAt(centerStack.getComponentCount()-1));
         centerStack.add(card);
+    }
+
+    @Override
+    public void configurePage(InitialPageSettings initialPageSettings) {
+        initialPageSettings.addLink("stylesheet", "https://fonts.googleapis.com/css2?family=Kanit:ital,wght@1,800&display=swap");
     }
 }
