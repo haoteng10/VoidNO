@@ -12,6 +12,7 @@ import com.vaadin.flow.server.PageConfigurator;
 
 @Route("/game")
 @CssImport("./styles/shared-styles.css")
+@CssImport("./styles/game.css")
 public class GameView extends VerticalLayout implements PageConfigurator {
 
     private static HorizontalLayout topStack;
@@ -19,6 +20,8 @@ public class GameView extends VerticalLayout implements PageConfigurator {
     private static HorizontalLayout bottomStack;
 
     public GameView() {
+
+        addClassName("game-view");
 
         topStack = new HorizontalLayout();
         centerStack = new HorizontalLayout();

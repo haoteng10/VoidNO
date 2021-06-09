@@ -4,6 +4,8 @@ import com.example.Views.GameView;
 import com.example.Views.HomeView;
 import com.example.components.BackCard;
 import com.example.components.Card;
+import com.example.components.CardType;
+import com.example.components.SmallPopUp;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.UI;
@@ -52,8 +54,12 @@ public class GamePlayer {
 
     public void playCard(int cardIndex) {
         if (Game.playCard(this, playingCards.get(cardIndex))) {
+
+            System.out.println("Layer 2: ");
+
             //Remove card from the player's stack
             Card card = playingCards.remove(cardIndex);
+
             //Remove the card from the GUI
             if (isComputer) {
                 GameView.removeCardFromComputerStack((BackCard) card);
@@ -69,6 +75,8 @@ public class GamePlayer {
             checkIfWinning();
 
             //Note: The opponent can move before the user selects a color
+
+            System.out.println("C: " + Game.isComputerTurn());
 
             //Change position
             Game.switchPosition();
@@ -91,7 +99,11 @@ public class GamePlayer {
             HorizontalLayout layout1 = new HorizontalLayout();
 
             Div text = new Div();
-            text.add("We have a winner!!!");
+            if (isComputer()) {
+                text.add("The computer won this game. Try again next time!");
+            } else {
+                text.add("You won the game! Woohoo!");
+            }
             text.addClassName("winning-text");
 
             layout1.add(text);
@@ -155,11 +167,27 @@ public class GamePlayer {
 
         for (int i = playingCards.size() - 1; i >= 0; i--) {
             if (Game.checkValidMove(this, playingCards.get(i))) {
+                String msg = "Computer: ";
+
+                if (playingCards.get(i).getType() == CardType.WILD_COLOR) {
+                    msg += "playing a wild card!";
+                } else if (playingCards.get(i).getType() == CardType.WILD_PLUS_FOUR){
+                    msg += "go wild +4!";
+                } else if (playingCards.get(i).getType() == CardType.ACTION_SKIP){
+                    msg += "skipped your round!";
+                } else if (playingCards.get(i).getType() == CardType.ACTION_PLUS_TWO){
+                    msg += "giving you 2 extra cards!";
+                } else {
+                    msg +=  playingCards.get(i).getType() + " " + playingCards.get(i).getColor() + " " + playingCards.get(i).getValue();
+                }
+
+                new SmallPopUp(10000, msg);
                 playCard(playingCards.get(i).getIndex());
                 return;
             }
         }
         Game.computerDrawCard();
+        Game.switchPosition();
     }
 
     public boolean isComputer(){

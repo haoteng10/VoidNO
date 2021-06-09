@@ -32,6 +32,13 @@ public class Game {
                     if (currentMove == player) {
                         System.out.println(drawCard.getColor() + " " + drawCard.getValue());
                         playerDrawCard();
+
+                        //Change position
+                        Game.switchPosition();
+
+                        if (Game.isComputerTurn()){
+                            Game.getComputer().autoplay();
+                        }
                     }
                 }
             });
@@ -55,6 +62,7 @@ public class Game {
     }
 
     public static void playerDrawCard() {
+        System.out.println("Player drew a card!");
         //Unhidden the drew card
         Card card = new Card(player.getPlayingCards().size(), drawCard.getType(), drawCard.getColor(), drawCard.getValue());
         //Give the player new card
@@ -67,57 +75,102 @@ public class Game {
             public void onComponentEvent(ClickEvent<Div> divClickEvent) {
                 System.out.println(drawCard.getColor() + " " + drawCard.getValue());
                 playerDrawCard();
+
+                //Change position
+                Game.switchPosition();
+
+                if (Game.isComputerTurn()){
+                    Game.getComputer().autoplay();
+                }
             }
         });
         GameView.replaceDrawCard(drawCard);
 
-        //Change position
-        Game.switchPosition();
-
-        if (Game.isComputerTurn()){
-            Game.getComputer().autoplay();
-        }
     }
 
     public static void computerDrawCard(){
-        System.out.println("Computer drawing card!");
+        System.out.println("Computer drew a card!");
 
         BackCard card = new BackCard(computer.getPlayingCards().size(), drawCard.getType(), drawCard.getColor(), drawCard.getValue());
 
         computer.newCard(card);
 
         // Reset the card for next draw
-        drawCard = new BackCard(-1, true);
+        drawCard = new BackCard(-1, false);
         drawCard.addClickListener(new ComponentEventListener<ClickEvent<Div>>() {
             @Override
             public void onComponentEvent(ClickEvent<Div> divClickEvent) {
                 System.out.println(drawCard.getColor() + " " + drawCard.getValue());
                 playerDrawCard();
+
+                //Change position
+                Game.switchPosition();
+
+                if (Game.isComputerTurn()){
+                    Game.getComputer().autoplay();
+                }
             }
         });
         GameView.replaceDrawCard(drawCard);
-
-        //Change position
-        Game.switchPosition();
     }
 
     public static boolean playCard(GamePlayer player, Card card) {
         if (checkValidMove(player, card)) {
             playingCards.add(card);
 
+            System.out.println("Card Type: " + card.getType());
+
             if (card.getType() == CardType.WILD_COLOR || card.getType() == CardType.WILD_PLUS_FOUR){
 
+                //Moved by a computer
                 if (currentMove == Game.computer){
                     new ColorSelector().random();
-                } else {
-                    if (!card.isSelectedColor()) {
-                        new SmallPopUp("You must select a color before placing!");
+                    if (card.getType() == CardType.WILD_PLUS_FOUR){
+                        for (int i = 0; i < 4; i++){
+                            playerDrawCard();
+                        }
+                        Game.switchPosition();
+                        return true;
+                    }
+                }
+
+                //Moved by a player
+                if (currentMove == Game.player){
+                    if (!card.isSelectedColor()){
+                        new SmallPopUp("Make sure to select a color before placing!");
                         return false;
                     }
-                    return true;
+
+                    if (card.getType() == CardType.WILD_PLUS_FOUR){
+                        for (int i = 0; i < 4; i++){
+                            computerDrawCard();
+                        }
+                        Game.switchPosition();
+                        return true;
+                    }
                 }
+
             }
 
+            //Action: Skip cards
+            if (card.getType() == CardType.ACTION_SKIP){
+                Game.switchPosition();
+            }
+
+            //Action: +2 cards
+            if (card.getType() == CardType.ACTION_PLUS_TWO){
+                if (currentMove == Game.player){
+                    for (int i = 0; i < 2; i++){
+                        computerDrawCard();
+                    }
+                    Game.switchPosition();
+                } else {
+                    for (int i = 0; i < 2; i++){
+                        playerDrawCard();
+                    }
+                    Game.switchPosition();
+                }
+            }
             return true;
         }
         return false;
@@ -125,6 +178,8 @@ public class Game {
 
     public static boolean checkValidMove(GamePlayer player, Card card) {
         if (playingCards.size() == 0) return true;
+
+        System.out.println("Check valid turn, Computer: " + Game.isComputerTurn());
 
         if (currentMove != player) return false;
 

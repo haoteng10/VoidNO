@@ -4,11 +4,18 @@ h1, h2, .button-div {
 }
 
 h1 {
+    font-size: 7em;
+    line-height: 0;
     font-family: 'Luckiest Guy', cursive;
 }
 
 .button-div {
     text-align: center;
+}
+
+.button-div vaadin-button {
+    margin: auto 5px;
+    font-size: 3em;
 }
 
 
