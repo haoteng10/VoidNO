@@ -1,9 +1,11 @@
 package com.example.Views;
 
 import com.example.Game;
+import com.example.components.AudioPlayer;
 import com.example.components.BackCard;
 import com.example.components.Card;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -42,7 +44,14 @@ public class GameView extends VerticalLayout implements PageConfigurator {
         // Start game
         new Game(true);
 
-        add(topStack, centerStack, bottomStack);
+        AudioPlayer player = new AudioPlayer();
+        player.setSource("music/The Process.mp3");
+
+        Div audioDiv = new Div();
+        audioDiv.add(player);
+        audioDiv.addClassName("audio-div");
+
+        add(topStack, centerStack, bottomStack, audioDiv);
     }
 
     public static void addCardToComputerStack(BackCard card) {

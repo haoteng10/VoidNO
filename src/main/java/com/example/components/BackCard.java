@@ -9,7 +9,7 @@ public class BackCard extends Card {
     public BackCard(int index, boolean firstCard){
         super(index, firstCard);
 
-        getStyle().set("background-color", "#6e6e6e");
+        getStyle().set("background-color", "#E0791F");
 
         Label cardNum = (Label) getChildren().filter(component -> {
             return component instanceof Label;
@@ -32,7 +32,7 @@ public class BackCard extends Card {
     public BackCard(int index, CardType type, String color, int value) {
         super(index, type, color, value);
 
-        getStyle().set("background-color", "gray");
+        getStyle().set("background-color", "#E0791F");
 
         Label cardNum = (Label) getChildren().filter(component -> {
             return component instanceof Label;

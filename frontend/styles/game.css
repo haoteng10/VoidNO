@@ -1,0 +1,18 @@
+.game-view {
+    height: 100vh;
+    width: 100vw;
+}
+
+.game-view::after {
+    content: "";
+    background-image: url("img/game background.png");
+    opacity: 0.2;
+    z-index: -1;
+    top: 0;
+    left: 7.5%;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
