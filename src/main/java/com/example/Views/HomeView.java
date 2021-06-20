@@ -1,5 +1,6 @@
 package com.example.Views;
 
+import com.example.Helper;
 import com.example.components.AudioPlayer;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -99,6 +100,9 @@ public class HomeView extends VerticalLayout implements PageConfigurator {
         audioDiv.addClassName("audio-div");
 
         add(h1, h2, buttonDiv, audioDiv);
+
+        //Helper
+        Helper.test();
     }
 
     @Override

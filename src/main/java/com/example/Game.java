@@ -20,6 +20,8 @@ public class Game {
     public static boolean dialogOpened;
 
     public Game(boolean restart){
+        super();
+
         if (restart) {
             //Playing card stack arraylist
             playingCards = new ArrayList<Card>();

@@ -51,7 +51,8 @@ public class GameView extends VerticalLayout implements PageConfigurator {
         audioDiv.add(player);
         audioDiv.addClassName("audio-div");
 
-        add(topStack, centerStack, bottomStack, audioDiv);
+//        add(topStack, centerStack, bottomStack, audioDiv);
+        super.add(topStack, centerStack, bottomStack, audioDiv);
     }
 
     public static void addCardToComputerStack(BackCard card) {

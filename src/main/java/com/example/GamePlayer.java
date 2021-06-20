@@ -22,16 +22,20 @@ import java.util.ArrayList;
 
 public class GamePlayer {
     private final ArrayList<Card> playingCards;
+    private final Card[] playingCardsArray; //Only for project requirement
     private final boolean isComputer;
 
     public GamePlayer(boolean isComputer){
         this.isComputer = isComputer;
 
         playingCards = new ArrayList<Card>();
+        playingCardsArray = new Card[7];
+
         if (isComputer){
             for (int i = 0; i < 7; i++){
                 BackCard card = new BackCard(playingCards.size(), false);
                 playingCards.add(card);
+                playingCardsArray[i] = card;
                 // Call MainView and add to the computer stack
                 GameView.addCardToComputerStack(card);
             }

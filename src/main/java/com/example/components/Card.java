@@ -7,6 +7,8 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
+import java.util.Objects;
+
 public class Card extends Div {
 
     private String color = "";
@@ -253,4 +255,24 @@ public class Card extends Div {
         return selectedColor;
     }
 
+    @Override
+    public String toString() {
+        return "Card: " +
+                "color='" + color + '\'' +
+                ", value=" + value +
+                ", type=" + type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return value == card.value && allowExpand == card.allowExpand && index == card.index && selectedColor == card.selectedColor && Objects.equals(color, card.color) && type == card.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, value, allowExpand, type, index, selectedColor);
+    }
 }
